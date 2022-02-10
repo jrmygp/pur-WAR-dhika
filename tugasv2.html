@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      table,
+      td,
+      th {
+        border-collapse: collapse;
+        border: 1px solid black;
+      }
+    </style>
+    <fieldset>
+      <legend>Employee Information</legend>
+      <label for="firstName">First name:</label>
+      <input type="text" id="firstName" name="firstName" />
+      <br />
+      <!-- hello -->
+      <br />
+      <label for="lastName">Last name:</label>
+      <input type="text" id="lastName" name="lastName" />
+      <br />
+      <br />
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" />
+      <br />
+      <br />
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" />
+      <br />
+      <br />
+      <label for="occupation">Occupation</label>
+      <select id="occupation">
+        <option>Software Developer</option>
+        <option>UI/UX</option>
+        <option>Digital Marketer</option>
+        <option>Data Scientist</option>
+      </select>
+      <br />
+      <br />
+      <button onclick="addData()">Create Data</button>
+    </fieldset>
+
+    <br />
+
+    <fieldset>
+      <legend>Search Employee</legend>
+      <label for="searchName">Employee Name:</label>
+      <input type="text" id="searchName" name="searchName" />
+      <br />
+      <br />
+      <label for="searchOccupation">Occupation</label>
+      <select id="searchOccupation">
+        <option value="">All Occupations</option>
+        <option>Software Developer</option>
+        <option>UI/UX</option>
+        <option>Digital Marketer</option>
+        <option>Data Scientist</option>
+      </select>
+      <br />
+      <br />
+      <button onclick="searchEmployees()">Search Employee</button>
+    </fieldset>
+
+    <br />
+
+    <fieldset>
+      <legend>Sort Employee</legend>
+      <label for="sortDir">Order</label>
+      <select id="sortDir">
+        <option id="up">Ascending</option>
+        <option id="down">Descending</option>
+      </select>
+      <br />
+      <br />
+      <button onclick="sortEmployeeByName()">Sort Employee By Name</button>
+      <button onclick="sortEmployeeByAge()">Sort Employee By Age</button>
+      <button onclick="renderData(employeeDatabase)">Reset Sort</button>
+    </fieldset>
+
+    <table>
+      <caption>
+        Employee Database
+      </caption>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Occupation</th>
+          <th>Age</th>
+          <th colspan="2">Action</th>
+        </tr>
+      </thead>
+
+      <tbody id="employeeDatabase"></tbody>
+    </table>
+
+    <script>
+      class Employee {
+        constructor(fullName, occupation, email, age) {
+          this.fullName = fullName;
+          this.email = email;
+          this.age = age;
+          this.occupation = occupation;
+        }
+      }
+
+      let employeeDatabase = [
+        new Employee("Mark", "Software Developer", "mark@mail.com", 17),
+        new Employee("Steve", "Digital Marketer", "steve@mail.com", 21),
+        new Employee("Bill", "UI/UX", "bill@mail.com", 13),
+        new Employee("Seto", "Data Scientist", "seto@mail.com", 30),
+      ];
+
+      const renderData = (dataToRender = []) => {
+        let htmlResult = "";
+
+        dataToRender.forEach((val, idx) => {
+          htmlResult += `
+            <tr>
+              <td>${idx + 1}</td>
+              <td>${val.fullName}</td>
+              <td>${val.email}</td>
+              <td>${val.occupation}</td>
+              <td>${val.age}</td>
+            </tr>
+          `;
+        });
+
+        document.getElementById("employeeDatabase").innerHTML = htmlResult;
+      };
+
+      const addData = () => {
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const email = document.getElementById("email").value;
+        const age = document.getElementById("age").value;
+        const occupation = document.getElementById("occupation").value;
+
+        const newEmployee = new Employee(
+          `${firstName} ${lastName}`,
+          occupation,
+          email,
+          age
+        );
+
+        employeeDatabase.push(newEmployee);
+
+        renderData(employeeDatabase);
+      };
+
+      renderData(employeeDatabase);
+
+      const searchEmployees = () => {
+        let searchEmployeeNameValue =
+          document.getElementById("searchName").value;
+        let searchEmployeeOccupationValue =
+          document.getElementById("searchOccupation").value;
+
+        let filteredData = employeeDatabase.filter((val) => {
+          return (
+            val.fullName
+              .toLowerCase()
+              .includes(searchEmployeeNameValue.toLowerCase()) &&
+            val.occupation
+              .toLowerCase()
+              .includes(searchEmployeeOccupationValue.toLowerCase())
+          );
+        });
+
+        renderData(filteredData);
+      };
+
+      let sortDir = document.getElementById("sortDir").value;
+      // Descending
+      const sortEmployeeByName = () => {
+        if (sortDir == "Descending") {
+          let copyDataBase = [...employeeDatabase];
+
+          let sortEmployee = copyDataBase.sort(function (a, b) {
+            return ("" + a.fullName).localeCompare(b.fullName);
+            if (item1.fullName < item2.fullName) return -1;
+            if (item1.fullName > item2.fullName) return 1;
+            return 0;
+          });
+          renderData(sortEmployee);
+
+          // Ascending
+        } else if (sortDir == "Ascending") {
+          let copyDataBase = [...employeeDatabase];
+
+          let sortEmployee = copyDataBase.sort(function (a, b) {
+            return ("" + a.fullName).localeCompare(b.fullName);
+            if (item1.fullName > item2.fullName) return -1;
+            if (item1.fullName < item2.fullName) return 1;
+            return 0;
+          });
+          renderData(sortEmployee);
+        }
+      };
+      const sortEmployeeByAge = () => {
+        if (sortDir == "Descending") {
+          let copyDataBase = [...employeeDatabase];
+          let sortEmployeeAge = copyDataBase.sort(function (a, b) {
+            return a.age - b.age;
+          });
+          renderData(sortEmployeeAge);
+        } else if (sortDir == "Ascending") {
+          let copyDataBase = [...employeeDatabase];
+          let sortEmployeeAge = copyDataBase.sort(function (a, b) {
+            return b.age - a.age;
+          });
+          renderData(sortEmployeeAge);
+        }
+      };
+    </script>
+  </body>
+</html>
+
+<!-- 
+  1. Inisialisasi Repository (Sekali saja)
+    a. git init
+    b. git remote add origin <URL_GITHUB_REPO>
+  2. Setiap ada perubahan file
+    a. git add .
+    b. git commit -m "<MESSAGE>"
+    c. git push origin main
+
+  3. Mac users (sekali seumur hidup)
+    a. git config --global init.defaultBranch main
+    b. git branch -m main
+ -->
+
+<!-- 
+   feat -> feature. Digunakan ketika ada perubahan di fitur.
+   fix -> digunakan ketika melakukan bugfix
+   ui -> digunakan ketika ada perubahan tampilan
+   docs -> digunakan ketika ada perubahan dokumentasi
+   chore -> digunakan ketika merapikan tetapi tidak mengubah
+            fungsi
+   ref -> digunakan ketika melakukan perapihan fitur atau optimasi
+  -->
