@@ -64,8 +64,8 @@
       }
 
       let jualanBaju = [
-        new Baju("https://static.dw.com/image/39370020_101.jpg", "Cocaine", 250000, 10, 0),
-        new Baju("https://pyxis.nymag.com/v1/imgs/995/fa8/85410a597ae40972b3839e1d0a1470e497-cannabis.rsquare.w700.jpg", "Weed", 200000, 10, 0),
+        new Baju("https://ae01.alicdn.com/kf/HTB151RxaAxz61VjSZFrq6xeLFXaM/Seksi-Bikini-Mikro-2019-Perspektif-String-Tak-Telanjang-Mengekspos-Perut-Seksi-Bikini-Baju-Renang-Wanita-One.jpg", "Sexy Black Bikini", 250000, 10, 0),
+        new Baju("https://m.media-amazon.com/images/I/81DakH2CC3L._AC_UX466_.jpg", "All American Style Bikini", 200000, 10, 0),
       ];
 
       let renderData = (dataToRender = []) => {
@@ -74,7 +74,7 @@
         dataToRender.forEach((val, idx) => {
           htmlResult += `
           <tr style="vertical-align: middle">
-              <td><img width = "200px" src="${val.img}"/></td>
+              <td><img width = "150px" src="${val.img}"/></td>
               <td>${val.items}</td>
               <td id="prices">${val.prices.toLocaleString()}</td>
               <td>${val.stock}</td>
