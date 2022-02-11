@@ -64,8 +64,8 @@
       }
 
       let jualanBaju = [
-        new Baju("bikini1.jpeg", "Sexy Black Bikini", 125000, 10, 0),
-        new Baju("bikini2.jpg", "All American Style Bikini", 150000, 10, 0),
+        new Baju("https://static.dw.com/image/39370020_101.jpg", "Cocaine", 250000, 10, 0),
+        new Baju("https://pyxis.nymag.com/v1/imgs/995/fa8/85410a597ae40972b3839e1d0a1470e497-cannabis.rsquare.w700.jpg", "Weed", 200000, 10, 0),
       ];
 
       let renderData = (dataToRender = []) => {
@@ -74,7 +74,7 @@
         dataToRender.forEach((val, idx) => {
           htmlResult += `
           <tr style="vertical-align: middle">
-              <td><img width = "100px" src="${val.img}"/></td>
+              <td><img width = "200px" src="${val.img}"/></td>
               <td>${val.items}</td>
               <td id="prices">${val.prices.toLocaleString()}</td>
               <td>${val.stock}</td>
