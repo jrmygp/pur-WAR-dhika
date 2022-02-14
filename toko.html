@@ -27,7 +27,7 @@
       <tbody id="itemsDataBase"></tbody>
     </table>
     <center>
-      <button onclick="checkOut()" class="btn btn-success">Checkout</button>
+      <button onclick="checkout()" class="btn btn-success">Checkout</button>
       <br />
       <br />
       <h3>Total Belanja anda: Rp. <span id="totalBelanja"></span></h3>
@@ -47,8 +47,11 @@
         };
 
         checkout = () => {
+          let totalPrice = this.calculateTotalPrice()
           this.stock -= this.cart;
           this.cart = 0;
+
+          return totalPrice
         };
       }
 
@@ -127,11 +130,10 @@
         renderData(jualanBaju);
       };
 
-      let checkOut = () => {
+      let checkout = () => {
         let totalPrice = 0;
-        jualanBaju.forEach((val) => {
-          totalPrice += val.calculateTotalPrice();
-          val.checkout();
+        jualanBaju.forEach((val, idx) => {
+          totalPrice += val.checkout();
         });
 
         document.getElementById("totalBelanja").innerHTML =
