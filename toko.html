@@ -29,11 +29,13 @@
     </table>
     <center>
       <button onclick="checkout()" class="btn btn-success">Checkout</button>
-      <br />
-      <br />
-      <h3>Total Belanja anda: Rp. <span id="totalBelanja"></span></h3>
-      <br />
-      <h3><span id="payment"></span></h3>
+      <div>
+        <br />
+        <br />
+        <h3>Total Belanja anda: Rp. <span id="totalBelanja"></span></h3>
+        <br />
+        <h3><span id="payment"></span></h3>
+      </div>
     </center>
 
     <script>
@@ -51,6 +53,8 @@
 
         checkout = () => {
           let totalPrice = this.calculateTotalPrice();
+          this.stock = this.stock - this.cart
+          this.cart = 0
 
           return totalPrice;
         };
@@ -148,12 +152,8 @@
           }
         }, 1000);
 
-        let stopTimer = () => {
-          clearInterval(timer);
-        };
-
         jualanBaju.forEach((val, idx) => {
-          totalPrice += val.checkout();
+          totalPrice += val.calculateTotalPrice();
         });
 
         document.getElementById("totalBelanja").innerHTML =
@@ -175,19 +175,24 @@
 
         if (payment > totalPrice) {
           alert("Terimakasih, kembalian anda ambil sendiri di kasir");
-          this.stock -= this.cart;
-          this.cart = 0;
+
           clearInterval(timer);
         } else if (payment < totalPrice) {
           alert("Uang anda kurang, mohon input lagi");
+          return
+
         } else if (payment == totalPrice) {
-          this.stock -= this.cart;
-          this.cart = 0;
           alert("terimakasih");
           clearInterval(timer);
         }
 
-        return renderData(jualanBaju);
+        jualanBaju.forEach((val,idx) => {
+          val.checkout()
+        }) 
+
+        renderData(jualanBaju)
+        document.getElementById("totalBelanja").innerHTML = "";
+        document.getElementById("payment").innerHTML = "";
       };
     </script>
   </body>
