@@ -47,9 +47,9 @@
         };
 
         checkout = () => {
-            this.stock = this.stock - this.cart
-            this.cart = 0
-        }
+          this.stock = this.stock - this.cart;
+          this.cart = 0;
+        };
       }
 
       class Baju extends Jualan {
@@ -64,8 +64,20 @@
       }
 
       let jualanBaju = [
-        new Baju("https://ae01.alicdn.com/kf/HTB151RxaAxz61VjSZFrq6xeLFXaM/Seksi-Bikini-Mikro-2019-Perspektif-String-Tak-Telanjang-Mengekspos-Perut-Seksi-Bikini-Baju-Renang-Wanita-One.jpg", "Sexy Black Bikini", 250000, 10, 0),
-        new Baju("https://m.media-amazon.com/images/I/81DakH2CC3L._AC_UX466_.jpg", "All American Style Bikini", 200000, 10, 0),
+        new Baju(
+          "https://ae01.alicdn.com/kf/HTB151RxaAxz61VjSZFrq6xeLFXaM/Seksi-Bikini-Mikro-2019-Perspektif-String-Tak-Telanjang-Mengekspos-Perut-Seksi-Bikini-Baju-Renang-Wanita-One.jpg",
+          "Sexy Black Bikini",
+          250000,
+          10,
+          0
+        ),
+        new Baju(
+          "https://m.media-amazon.com/images/I/81DakH2CC3L._AC_UX466_.jpg",
+          "All American Style Bikini",
+          200000,
+          10,
+          0
+        ),
       ];
 
       let renderData = (dataToRender = []) => {
@@ -80,8 +92,8 @@
               <td>${val.stock}</td>
               <td id="cart">${val.cart}</td>
               <td><button onclick="decrementQty(${idx})" id ="minus" class="btn btn-secondary">-</button></td>
-            <td><button onclick="incrementQty(${idx})" id = "plus" class="btn btn-secondary">+</button></td>
-            </tr>
+              <td><button onclick="incrementQty(${idx})" id = "plus" class="btn btn-secondary">+</button></td>
+          </tr>
             `;
         });
 
@@ -99,32 +111,33 @@
           alert("Quantity tidak boleh melebihi stock");
         }
 
-        renderData(jualanBaju); 
+        renderData(jualanBaju);
       };
 
       // Ketik user pencet tanda kurang
       const decrementQty = (productIdx) => {
         const product = jualanBaju[productIdx];
-      
-        if(product.cart > 0) {
-            product.cart -= 1
+
+        if (product.cart > 0) {
+          product.cart -= 1;
         } else {
-            alert("Quantity tidak boleh kurang dari 0")
+          alert("Quantity tidak boleh kurang dari 0");
         }
 
-        renderData(jualanBaju)
-    };
+        renderData(jualanBaju);
+      };
 
-    let checkOut = () => {
-        let totalPrice = 0
+      let checkOut = () => {
+        let totalPrice = 0;
         jualanBaju.forEach((val) => {
-            totalPrice += val.calculateTotalPrice()
-            val.checkout()
-        })
+          totalPrice += val.calculateTotalPrice();
+          val.checkout();
+        });
 
-        document.getElementById("totalBelanja").innerHTML = totalPrice.toLocaleString()
-        renderData(jualanBaju)
-    }
+        document.getElementById("totalBelanja").innerHTML =
+          totalPrice.toLocaleString();
+        renderData(jualanBaju);
+      };
     </script>
   </body>
 </html>
