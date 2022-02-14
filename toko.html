@@ -10,6 +10,7 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
       crossorigin="anonymous"
     />
+
     <title>Document</title>
   </head>
   <body class="container">
@@ -31,6 +32,8 @@
       <br />
       <br />
       <h3>Total Belanja anda: Rp. <span id="totalBelanja"></span></h3>
+      <br />
+      <h3><span id="payment"></span></h3>
     </center>
 
     <script>
@@ -47,11 +50,9 @@
         };
 
         checkout = () => {
-          let totalPrice = this.calculateTotalPrice()
-          this.stock -= this.cart;
-          this.cart = 0;
+          let totalPrice = this.calculateTotalPrice();
 
-          return totalPrice
+          return totalPrice;
         };
       }
 
@@ -88,16 +89,16 @@
 
         dataToRender.forEach((val, idx) => {
           htmlResult += `
-          <tr style="vertical-align: middle">
-              <td><img width = "150px" src="${val.img}"/></td>
-              <td>${val.items}</td>
-              <td id="prices">${val.prices.toLocaleString()}</td>
-              <td>${val.stock}</td>
-              <td id="cart">${val.cart}</td>
-              <td><button onclick="decrementQty(${idx})" id ="minus" class="btn btn-secondary">-</button></td>
-              <td><button onclick="incrementQty(${idx})" id = "plus" class="btn btn-secondary">+</button></td>
-          </tr>
-            `;
+              <tr style="vertical-align: middle">
+                <td><img width = "150px" src="${val.img}"/></td>
+                <td>${val.items}</td>
+                <td id="prices">${val.prices.toLocaleString()}</td>
+                <td>${val.stock}</td>
+                <td id="cart">${val.cart}</td>
+                <td><button onclick="decrementQty(${idx})" id ="minus" class="btn btn-secondary">-</button></td>
+                <td><button onclick="incrementQty(${idx})" id = "plus" class="btn btn-secondary">+</button></td>
+                </tr>
+                `;
         });
 
         document.getElementById("itemsDataBase").innerHTML = htmlResult;
@@ -130,15 +131,63 @@
         renderData(jualanBaju);
       };
 
+      let timer;
+
       let checkout = () => {
         let totalPrice = 0;
+
+        let countDown = 10;
+        timer = setInterval(() => {
+          let paymentUser = document.getElementById("inputPayment").innerHTML;
+          paymentUser = parseInt(paymentUser);
+          countDown -= 1;
+          document.getElementById("timer").innerHTML = countDown;
+          if (countDown == 0) {
+            clearInterval(timer);
+            alert("waktu anda habis");
+          }
+        }, 1000);
+
+        let stopTimer = () => {
+          clearInterval(timer);
+        };
+
         jualanBaju.forEach((val, idx) => {
           totalPrice += val.checkout();
         });
 
         document.getElementById("totalBelanja").innerHTML =
           totalPrice.toLocaleString();
+
+        document.getElementById(
+          "payment"
+        ).innerHTML = `<input id="inputPayment" type="text"> <button onclick="pembayaran()">Bayar</button><br><h3>Waktu Pembayaran:<span id="timer"></span></h3>`;
+
         renderData(jualanBaju);
+      };
+      pembayaran = () => {
+        let totalPrice = 0;
+        jualanBaju.forEach((val, idx) => {
+          totalPrice += val.calculateTotalPrice();
+        });
+        let payment = document.getElementById("inputPayment").value;
+        payment = parseInt(payment);
+
+        if (payment > totalPrice) {
+          alert("Terimakasih, kembalian anda ambil sendiri di kasir");
+          this.stock -= this.cart;
+          this.cart = 0;
+          clearInterval(timer);
+        } else if (payment < totalPrice) {
+          alert("Uang anda kurang, mohon input lagi");
+        } else if (payment == totalPrice) {
+          this.stock -= this.cart;
+          this.cart = 0;
+          alert("terimakasih");
+          clearInterval(timer);
+        }
+
+        return renderData(jualanBaju);
       };
     </script>
   </body>
