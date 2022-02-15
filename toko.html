@@ -53,8 +53,8 @@
 
         checkout = () => {
           let totalPrice = this.calculateTotalPrice();
-          this.stock = this.stock - this.cart
-          this.cart = 0
+          this.stock = this.stock - this.cart;
+          this.cart = 0;
 
           return totalPrice;
         };
@@ -135,11 +135,16 @@
         renderData(jualanBaju);
       };
 
+
       let timer;
 
       let checkout = () => {
         let totalPrice = 0;
-
+        // supaya kalau cart = 0 user ga bisa checkout
+        if (!totalPrice) {
+          alert ("Anda belum membeli barang")
+          return
+        }
         let countDown = 10;
         timer = setInterval(() => {
           let paymentUser = document.getElementById("inputPayment").innerHTML;
@@ -174,23 +179,21 @@
         payment = parseInt(payment);
 
         if (payment > totalPrice) {
-          alert("Terimakasih, kembalian anda ambil sendiri di kasir");
-
+          alert(`Terima kasih, kembalian anda sebesar: Rp. ${(payment - totalPrice).toLocaleString} ambil sendiri di kasir`);
           clearInterval(timer);
         } else if (payment < totalPrice) {
           alert("Uang anda kurang, mohon input lagi");
-          return
-
+          return;
         } else if (payment == totalPrice) {
-          alert("terimakasih");
+          alert("terima kasih semoga bini anda senang dengan bikininya");
           clearInterval(timer);
         }
 
-        jualanBaju.forEach((val,idx) => {
-          val.checkout()
-        }) 
+        jualanBaju.forEach((val, idx) => {
+          val.checkout();
+        });
 
-        renderData(jualanBaju)
+        renderData(jualanBaju);
         document.getElementById("totalBelanja").innerHTML = "";
         document.getElementById("payment").innerHTML = "";
       };
